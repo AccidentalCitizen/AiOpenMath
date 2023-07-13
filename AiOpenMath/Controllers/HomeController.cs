@@ -53,7 +53,7 @@ namespace AiOpenMath.Controllers
             for (int i = 0; i < noOfQuestions; i++)
             {
                 var function = Gr12Wrapper
-                .GetSubSyllabusQuestionGenerator(4); // SubSyllabusID
+                .GetSubSyllabusQuestionGenerator(14); // SubSyllabusID
                 var temp = function.Invoke(parameter);
                 allQuestions += temp.Split('$')[0] + "$";
                 allAnswers += temp.Split('$')[1] + "$";
