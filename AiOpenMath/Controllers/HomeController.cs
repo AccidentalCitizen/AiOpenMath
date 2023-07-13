@@ -1,4 +1,6 @@
-﻿using AiOpenMath.Models;
+﻿using AiOpenMath.Domain;
+using AiOpenMath.Domain.MyOwnTimerBecauseDotNetsCrappyTimerWontWork;
+using AiOpenMath.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,20 +15,76 @@ namespace AiOpenMath.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        // GET: HomeWork
+        private static IList<string> questions;
+        private static IList<string> answers;
+        private int homeworkID;
+        public ActionResult index()
         {
-            return View();
+
+
+
+
+
+            var allQuestions = "";
+            var allAnswers = "";
+
+
+            homeworkID = 1;
+            questions = new List<string>();
+            answers = new List<string>();
+            var parameter = new HomeworkParameters();
+            var noOfQuestions = 5; // number of questions
+            parameter.ComplexityID = 2;
+            parameter.NoOfTerms = 3;
+            parameter.NoOfLawsInUse = 2;
+            parameter.DegreeOfRemoval = 2;
+            parameter.AngleOrSide = 1;
+            parameter.ArithOrGeom = 1;
+            parameter.HighestNumber = 15;
+            parameter.HighestNumberPow = 2;
+            parameter.highest_a = 2;
+            parameter.highest_d = 5;
+            parameter.highest_n = 1000;
+            parameter.highest_r = 2;
+            parameter.maxSides = 2;
+            parameter.NoOfTerms = 2;
+
+            for (int i = 0; i < noOfQuestions; i++)
+            {
+                var function = Gr12Wrapper
+                .GetSubSyllabusQuestionGenerator(4); // SubSyllabusID
+                var temp = function.Invoke(parameter);
+                allQuestions += temp.Split('$')[0] + "$";
+                allAnswers += temp.Split('$')[1] + "$";
+                questions.Add(temp.Split('$')[0]);
+                answers.Add("");//temp.Split('$')[1]);
+                function = null;
+                MyTimer.IntervalTimer_Elapsed(0.5m);
+            }
+
+            var viewModel = new QuestionsViewModel();
+            viewModel.questions = questions;
+            viewModel.answers = answers;
+            viewModel.preview = false;
+
+            viewModel.HomeWorkID = homeworkID;
+
+
+            return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public ActionResult index(QuestionsViewModel model)
         {
-            return View();
-        }
+            var answers = model.answers;
+            var answersString = "";
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            foreach (var answer in answers)
+            {
+                answersString += answer + "$";
+            }
+            return View();
         }
     }
 }
