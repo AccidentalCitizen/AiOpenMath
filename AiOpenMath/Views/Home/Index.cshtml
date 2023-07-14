@@ -37,18 +37,42 @@
                     @Html.Raw("<h3></h3>") @c @Html.Raw("$$") @question @Html.Raw("$$")
                     <br />
                 </div>
-                <div style="background-color:white;color:gray;width:100%;">
+@*                <div style="background-color:white;color:gray;width:100%;">
                     <br />
                     @Html.TextAreaFor(m => m.answers[cnt], new { id = "txt" + cnt, @class = "text" })
                     @Html.Raw("<br>");
 
                     <br />
-                </div>
+                </div>*@
             </div>
         }
         <br />
         <br />
+             c = 0;
+     cnt = -1;
+    foreach (var answer in @Model.allAnswers)
+    {
+        c = c + 1;
+        cnt++;
+        var identifier = "answersdiv" + cnt.ToString();
+            <div class="optionsDiv" style="background-color:white;color:gray;text-align:center;"><span style="font-size:20px;cursor:pointer;padding:5px" onclick="openQuestion('@identifier')">&#9776; Open Answer @c.ToString()</span><span style="font-size:20px;cursor:pointer;padding:5px" onclick="closeQuestion('@identifier')">&#9776; Close</span></div>
+            <div id="@identifier" style="visibility:hidden;height:0px">
+                <div class="qtext">
+                    <br />
+                    @Html.Raw("<h3></h3>") @c @Html.Raw("$$") @answer @Html.Raw("$$")
+                    <br />
+                </div>
+@*                <div style="background-color:white;color:gray;width:100%;">
+                    <br />
+                    @Html.TextAreaFor(m => m.answers[cnt], new { id = "txt" + cnt, @class = "text" })
+                    @Html.Raw("<br>");
 
+                    <br />
+                </div>*@
+            </div>
+        }
+        <br />
+        <br />
 
 
         @*<h2>Answers</h2>
@@ -60,7 +84,7 @@
                 @Html.Raw("<br>");
                 cnt++;
             }*@
-        @Html.TextAreaFor(m => m.HomeWorkID);
+@*        @Html.HiddenTextAreaFor(m => m.HomeWorkID);*@
         @Html.Raw("<br>");
         //Model.preview = true;
         //Html.EditorFor(model => model.preview);
