@@ -4,7 +4,7 @@
 }
 <blockquote>
     <!--Side Menu-->
-    @using (Html.BeginForm("/HomeWorkSubmitted", "HomeWork", FormMethod.Post))
+    @using (Html.BeginForm(FormMethod.Post))
     {
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -23,6 +23,18 @@
                 <button onclick="location.href = '';" id="myButton" class="button">Diary</button>
             </div>
             <br /><br />*@
+        <div style="width: 30%; background-color: snow; height: 220px;  margin-right: 2px; border-radius: 25px; bottom: 0px; left: 50%; ">
+            <br /><br /><br />
+            <div style="padding:20px;">
+                @Html.DropDownListFor(s => s.syllabusId, 
+                    new SelectList(Model.allSyllabusTiems.Select(x => new { Value = x.GetKey, Text = x.GetValue }), "Value", "Text"), new { @class = "button" })
+                <br /><br /><br />
+                @Html.TextBoxFor(s => s.noOfQuestiones, new { @class = "button" })
+            </div>
+        </div>
+
+        <br /><br /><br />
+
     var c = 0;
     var cnt = -1;
     foreach (var question in @Model.questions)
