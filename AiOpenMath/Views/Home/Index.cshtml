@@ -30,7 +30,9 @@
         c = c + 1;
         cnt++;
         var identifier = "questiondiv" + cnt.ToString();
-            <div class="optionsDiv" style="background-color:white;color:gray;text-align:center;"><span style="font-size:20px;cursor:pointer;padding:5px" onclick="openQuestion('@identifier')">&#9776; Open Question @c.ToString()</span><span style="font-size:20px;cursor:pointer;padding:5px" onclick="closeQuestion('@identifier')">&#9776; Close</span></div>
+            <div class="optionsDiv" style="background-color:white;color:gray;text-align:center;">
+                <span style="font-size:20px;cursor:pointer;padding:5px" onclick="openQuestion('@identifier')">&#9776; Open Question @c.ToString()</span>
+                <span style="font-size:20px;cursor:pointer;padding:5px" onclick="closeQuestion('@identifier')">&#9776; Close</span></div>
             <div id="@identifier" style="visibility:hidden;height:0px">
                 <div class="qtext">
                     <br />
@@ -55,7 +57,9 @@
         c = c + 1;
         cnt++;
         var identifier = "answersdiv" + cnt.ToString();
-            <div class="optionsDiv" style="background-color:white;color:gray;text-align:center;"><span style="font-size:20px;cursor:pointer;padding:5px" onclick="openQuestion('@identifier')">&#9776; Open Answer @c.ToString()</span><span style="font-size:20px;cursor:pointer;padding:5px" onclick="closeQuestion('@identifier')">&#9776; Close</span></div>
+            <div class="optionsDiv" style="background-color:white;color:gray;text-align:center;">
+                <span style="font-size:20px;cursor:pointer;padding:5px" onclick="openQuestion('@identifier')">&#9776; Open Answer @c.ToString()</span>
+                <span style="font-size:20px;cursor:pointer;padding:5px" onclick="closeQuestion('@identifier')">&#9776; Close</span></div>
             <div id="@identifier" style="visibility:hidden;height:0px">
                 <div class="qtext">
                     <br />
