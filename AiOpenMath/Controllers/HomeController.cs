@@ -121,9 +121,14 @@ namespace AiOpenMath.Controllers
                 .GetSubSyllabusQuestionGenerator(viewModel.syllabusId); // SubSyllabusID
                 var temp = function.Invoke(parameter);
                 allQuestions += temp.Split('$')[0] + "$";
-                allAnswers += temp.Split('$')[1] + "$";
                 questions.Add(temp.Split('$')[0]);
-                answers.Add(temp.Split('$')[1]);
+                try
+                {
+                    allAnswers += temp.Split('$')[1] == null ? "" : temp.Split('$')[1] + "$";
+
+                    answers.Add(temp.Split('$')[1] == null ? "" : temp.Split('$')[1]);
+                }
+                catch(IndexOutOfRangeException e) {  }
                 function = null;
                 MyTimer.IntervalTimer_Elapsed(0.5m);
             }

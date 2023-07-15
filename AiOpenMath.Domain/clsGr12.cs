@@ -56,8 +56,8 @@ namespace AiOpenMath.Domain
                 for (int i = 0; i < NoOfTerms; i++)
                 {
                     Retlog = Retlog + rnd.Next(1, HighestNumber).ToString()
-                            + "<sup>(" + rnd.Next(1, 45).ToString() + XorNot[1].ToString()
-                            + Operations[rnd.Next(0, 1)] + rnd.Next(1, HighestNumberPow).ToString() + ")</sup>";
+                            + "^{" + rnd.Next(1, 45).ToString() + XorNot[1].ToString()
+                            + Operations[rnd.Next(0, 1)] + rnd.Next(1, HighestNumberPow).ToString() + "}";
                     if (i != NoOfTerms - 1)
                     {
                         Retlog = Retlog + Operations[rnd.Next(0, 1)];
@@ -104,7 +104,7 @@ namespace AiOpenMath.Domain
                     // a,d,n,Nn
                     // a,d,n,Sn
                     hold = rnd.Next(0, 2);
-                    seq = seq + "Given that the " + Art[hold] + " of an arithmetic progression is " + Arith[hold].ToString() + " and the sum up to n terms and the N<sup>th</sup> term are {" + Arith[4] + "," + Arith[3] + "} Respectively, calculate the remaining entities of the progression.";
+                    seq = seq + "Given that the " + Art[hold] + " of an arithmetic progression is " + Arith[hold].ToString() + " and the sum up to n terms and the N^{th} term are {" + Arith[4] + "," + Arith[3] + "} Respectively, calculate the remaining entities of the progression.";
 
                 }
                 return seq;
@@ -404,7 +404,7 @@ namespace AiOpenMath.Domain
                 a = rdm.Next(1, 2);
                 b = rdm.Next(1, 9);
                 c = rdm.Next(1, 12);
-                Temp = "Y=x<sup>3</sup>+(" + (a + b + c).ToString() + ")x<sup>2</sup>+(" + (a * b + b * c + a * c).ToString() + ")x+(" + (a * b * c).ToString() + ")";
+                Temp = "Y=x^3+(" + (a + b + c).ToString() + ")x^2+(" + (a * b + b * c + a * c).ToString() + ")x+(" + (a * b * c).ToString() + ")";
                 Cubic = Cubic + "Find the x-y intercepts and the turning points of the following cubic: " + Temp;
                 Cubic = Cubic + "$" + a.ToString() + "," + b.ToString() + "," + c.ToString();
                 return Cubic;
