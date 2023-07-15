@@ -27,9 +27,9 @@
             <br /><br /><br />
             <div style="padding:20px;">
                 @Html.DropDownListFor(s => s.syllabusId, 
-                    new SelectList(Model.allSyllabusTiems.Select(x => new { Value = x.GetKey, Text = x.GetValue }), "Value", "Text"), new { @class = "button" })
+                    new SelectList(Model.allSyllabusTiems.Select(x => new { Value = x.GetKey, Text = x.GetValue }), "Value", "Text"), new { @class = "button" , style = "width: 300px;"})
                 <br /><br /><br />
-                @Html.TextBoxFor(s => s.noOfQuestiones, new { @class = "button" })
+                @Html.TextBoxFor(s => s.noOfQuestiones, new { @class = "button",style = "width: 200px;" })
             </div>
         </div>
 
