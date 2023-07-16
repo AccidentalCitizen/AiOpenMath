@@ -10,9 +10,15 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <!--Enter menu button items-->
 
-            @Html.ActionLink("Portal", "StudentPortal", "Portal")
-            @Html.ActionLink("Formula TeX Assist", "StudentPortal", "Portal")
-            @Html.ActionLink("Text to TeX OCR", "StudentPortal", "Portal")
+        <div style="width: 30%; background-color: snow; height: 220px;  margin-right: 2px; border-radius: 25px; bottom: 0px; left: 50%; ">
+            <br /><br /><br />
+            <div style="padding:20px;">
+                @Html.DropDownListFor(s => s.syllabusId, 
+                    new SelectList(Model.allSyllabusTiems.Select(x => new { Value = x.GetKey, Text = x.GetValue }), "Value", "Text"), new { @class = "button" , style = "width: 300px;"})
+                <br /><br /><br />
+                @Html.TextBoxFor(s => s.noOfQuestiones, new { @class = "button",style = "width: 200px;" })
+            </div>
+        </div>
         </div>
         @*If $ax^2+bx+c=0$ with $a≠0$, then: $$x={-b±√{b^2-4ac}}/{2a}$$ $$Csc[x]={{1/{1/(Sin[x])}}*{1/{1/(Sec[x])}}}/{Cos[x]}$$*@
         @*\[∫_\Δd\bo ω=∫_{∂\Δ}\bo ω\]*@
@@ -23,15 +29,7 @@
                 <button onclick="location.href = '';" id="myButton" class="button">Diary</button>
             </div>
             <br /><br />*@
-        <div style="width: 30%; background-color: snow; height: 220px;  margin-right: 2px; border-radius: 25px; bottom: 0px; left: 50%; ">
-            <br /><br /><br />
-            <div style="padding:20px;">
-                @Html.DropDownListFor(s => s.syllabusId, 
-                    new SelectList(Model.allSyllabusTiems.Select(x => new { Value = x.GetKey, Text = x.GetValue }), "Value", "Text"), new { @class = "button" , style = "width: 300px;"})
-                <br /><br /><br />
-                @Html.TextBoxFor(s => s.noOfQuestiones, new { @class = "button",style = "width: 200px;" })
-            </div>
-        </div>
+
 
         <br /><br /><br />
 
