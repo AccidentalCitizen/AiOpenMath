@@ -1,0 +1,158 @@
+﻿using System;
+using AI.Visualize.Domain.ContainerObjects;
+using AI.Visualize.Domain.Mathematical_Technique_Objects;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace Visualizer
+{
+    public class DrawGraphics //
+    {
+        public static List<PointVectorPair> actualPoints = new List<PointVectorPair>();
+
+        public static _3Matrix RotateAndDrawBitmap(MouseEventArgs e, PictureBox graphicsDisplayBox, IList<Point<_3Vector, _3Vector>> pointsList, double pivotX, double pivotY)
+        {
+
+            decimal scaleX = 4 / (decimal)graphicsDisplayBox.Width;
+            decimal rotationCounterX = scaleX * e.X;
+
+            decimal scaleY = 4 / (decimal)graphicsDisplayBox.Height;
+            decimal rotationCounterY = scaleY * e.Y;
+
+            graphicsDisplayBox.Image = new Bitmap(graphicsDisplayBox.Width, graphicsDisplayBox.Height);
+            var rotationResult = RotationMatrices.RotateByAngles((float)rotationCounterY, 0, (float)rotationCounterX);
+
+            foreach (Point<_3Vector, _3Vector> pointPair in pointsList)
+            {
+                using (var g = System.Drawing.Graphics.FromImage(graphicsDisplayBox.Image))
+                {
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    _3Vector pointA, pointB;
+                    Pen pen;
+                    EffectColourScheme(rotationResult, pointPair, out pointA, out pointB, out pen);
+
+                    g.DrawLine(pen, (float)((pointA.a) + pointA.b + pivotX)
+                                , (float)((pointA.c) + pivotY)
+                                , (float)((pointB.a) + pointB.b + pivotX)
+                                , (float)((pointB.c) + pivotY));
+
+                    actualPoints.Add(new PointVectorPair(new Point<double, double>(((pointA.a) + pointA.b + pivotX), ((pointA.c) + pivotY))
+                    , pointPair));
+                }
+            }
+            return rotationResult;
+        }
+
+        public static _3Matrix RotateAndDrawUnlinedBitmap(MouseEventArgs e, PictureBox graphicsDisplayBox, IList<Point<_3Vector, _3Vector>> pointsList, double pivotX, double pivotY)
+        {
+
+            decimal scaleX = 4 / (decimal)graphicsDisplayBox.Width;
+            decimal rotationCounterX = scaleX * e.X;
+
+            decimal scaleY = 4 / (decimal)graphicsDisplayBox.Height;
+            decimal rotationCounterY = scaleY * e.Y;
+
+            graphicsDisplayBox.Image = new Bitmap(graphicsDisplayBox.Width, graphicsDisplayBox.Height);
+            var rotationResult = RotationMatrices.RotateByAngles((float)rotationCounterY, 0, (float)rotationCounterX);
+
+            foreach (var pointPair in pointsList)
+            {
+                using (var g = System.Drawing.Graphics.FromImage(graphicsDisplayBox.Image))
+                {
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    _3Vector pointA, pointB;
+                    Pen pen;
+                    EffectColourScheme(rotationResult, pointPair, out pointA, out pointB, out pen);
+
+                    g.DrawEllipse(pen, (float)((pointA.a) + pivotX)
+                                , (float)((pointA.b) + pivotY)
+                                , (float)(3)
+                                , (float)(3));
+
+                    actualPoints.Add(new PointVectorPair(new Point<double, double>(((pointA.a) + pointA.b + pivotX), 0)
+                    , pointPair)); //((pointA.c) + pivotY)
+                }
+            }
+            return rotationResult;
+        }
+
+        //public static _3Matrix TranslateAndDrawBitmap(MouseEventArgs e, PictureBox graphicsDisplayBox, IList<Point<_3Vector, _3Vector>> pointsList, double pivotX, double pivotY)
+        //{
+
+
+
+        //}
+
+        private static void EffectColourScheme(_3Matrix rotationResult, Point<_3Vector, _3Vector> pointPair, out _3Vector pointA, out _3Vector pointB, out Pen pen)
+        {
+            double blue = 0;
+            double red = 0;
+            pointA = rotationResult.MultiplyByVector(pointPair.Xval);
+            pointB = rotationResult.MultiplyByVector(pointPair.Yval);
+            var gradient = (pointPair.Yval.c - pointPair.Xval.c) / (pointPair.Yval.a - pointPair.Xval.a);
+            if (Math.Abs(gradient) > 1)
+            {
+                if (Math.Abs(gradient) > 5000)
+                {
+                    gradient = 5000;
+                }
+                blue = 255 * (Math.Abs(gradient) / 5000);
+            }
+
+            if (Math.Abs(gradient) < 1)
+            {
+                if (gradient == 0)
+                {
+                    gradient = 0.001;
+                }
+                //19.60
+                red = 255 * (1 - Math.Abs(gradient));
+            }
+
+            pen = new Pen(Color.FromArgb((int)Math.Round(red, 0), 100, (int)Math.Round(blue, 0)));
+        }
+
+        public static void AngleAxis(_3Matrix rotationResult, PictureBox AnglePictureBox,
+            _3Vector AngleX,
+            _3Vector AngleY,
+            _3Vector AngleZ)
+        {
+            AnglePictureBox.Image = new Bitmap(AnglePictureBox.Width, AnglePictureBox.Height);
+            using (var g = System.Drawing.Graphics.FromImage(AnglePictureBox.Image))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                var resX = rotationResult.MultiplyByVector(AngleX);
+                var resY = rotationResult.MultiplyByVector(AngleY);
+                var resZ = rotationResult.MultiplyByVector(AngleZ);
+
+                for (int i = 1; i <= 19; i++)
+                {
+                    g.DrawLine(Pens.Gray, i * 10, 0, i * 10, 200);//x
+                    g.DrawLine(Pens.Gray, 0, i * 10, 200, i * 10);//y
+                }
+                var penX = new Pen(Color.LightGreen, 2);
+                var penY = new Pen(Color.Blue, 2);
+                var penZ = new Pen(Color.Red, 2);
+                g.DrawLine(penX, 100, 100, (float)resX.a + 100, (float)resX.c + 100);
+                g.DrawLine(penY, 100, 100, (float)resY.a + 100, (float)resY.c + 100);
+                g.DrawLine(penZ, 100, 100, (float)resZ.a + 100, (float)resZ.c + 100);
+
+            }
+        }
+        public class PointVectorPair
+        {
+            public readonly Point<double, double> transformed;
+            public readonly Point<_3Vector, _3Vector> actual;
+            public PointVectorPair(Point<double, double> transformed,
+                Point<_3Vector, _3Vector> actual)
+            {
+                this.actual = actual;
+                this.transformed = transformed;
+            }
+        }
+    }
+}
